@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  server:
+    build: ./
+    container_name: server
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_PORT=${DB_PORT}
+      - DB_DATABASE=${DB_DATABASE}
+      - SERVER_PORT=${SERVER_PORT}
+  db:
+    # build: ./
+    build: ./database/
+    container_name: task_manager
+    ports:
+      - "5435:5432"
+    environment:
+    #  - POSTGRES_USER=${DB_USERNAME}
+    #  - POSTGRES_PASSWORD=${DB_PASSWORD}
+    #  - POSTGRES_DB=${DB_DATABASE}
+    #  - SSL_MODE=disable
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=mark
+     - POSTGRES_DB=task_service
+     - SSL_MODE=disable
