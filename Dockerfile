@@ -10,6 +10,6 @@ COPY . /github.com/andy-ahmedov/task_manager_server/
 WORKDIR /github.com/andy-ahmedov/task_manager_server/
 
 RUN go mod download
-RUN go build -o ./bin/server_init server/cmd/main.go
+RUN go build -o ./bin/server_init cmd/main.go
 
 CMD ["./bin/server_init"]

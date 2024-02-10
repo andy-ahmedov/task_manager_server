@@ -4,6 +4,8 @@ services:
   server:
     build: ./
     container_name: server
+    ports:
+      - "9000:9000"
     depends_on:
       - db
     environment:
@@ -16,9 +18,9 @@ services:
   db:
     # build: ./
     build: ./database/
-    container_name: task_manager
+    container_name: new_task_manager
     ports:
-      - "5435:5432"
+      - "5436:5432"
     environment:
     #  - POSTGRES_USER=${DB_USERNAME}
     #  - POSTGRES_PASSWORD=${DB_PASSWORD}
