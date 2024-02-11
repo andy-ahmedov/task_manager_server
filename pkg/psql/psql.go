@@ -17,13 +17,21 @@ func ConnectToDB(cfg config.Postgres) (*pgx.Conn, error) {
 
 	fmt.Println(conn_str)
 
+	conn, err = ConnectionAttempts(conn, conn_str, err)
+	if err != nil {
+		return nil, err
+	} else {
+		return conn, nil
+	}
+}
+
+func ConnectionAttempts(conn *pgx.Conn, conn_str string, err error) (*pgx.Conn, error) {
 	for i := 0; i < 10; i++ {
-		conn, err := pgx.Connect(context.Background(), conn_str)
+		conn, err = pgx.Connect(context.Background(), conn_str)
 		if err != nil {
 			fmt.Println("TRYING №", i, err)
 			time.Sleep(time.Second)
 			continue
-			// return nil, err
 		}
 
 		err = conn.Ping(context.TODO())
@@ -31,7 +39,6 @@ func ConnectToDB(cfg config.Postgres) (*pgx.Conn, error) {
 			fmt.Println("TRYING №", i, err)
 			time.Sleep(time.Second)
 			continue
-			// return nil, err
 		}
 		break
 	}
