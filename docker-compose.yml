@@ -8,6 +8,10 @@ services:
       - "9000:9000"
     depends_on:
       - db
+      - rabbitmq
+    networks:
+      - task_manager_client_default
+      - task_manager_server_default
     environment:
       - DB_HOST=${DB_HOST}
       - DB_USERNAME=${DB_USERNAME}
@@ -25,7 +29,18 @@ services:
      - POSTGRES_PASSWORD=mark
      - POSTGRES_DB=task_service
      - SSL_MODE=disable
-    #  - POSTGRES_USER=${DB_USERNAME}
-    #  - POSTGRES_PASSWORD=${DB_PASSWORD}
-    #  - POSTGRES_DB=${DB_DATABASE}
-    #  - SSL_MODE=disable
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - task_manager_client_default
+      - task_manager_server_default
+
+networks:
+  task_manager_client_default:
+    external: true
+  task_manager_server_default:
+    external: true

@@ -22,7 +22,7 @@ func main() {
 
 	db, err := psql.ConnectToDB(cfg.DB)
 	if err != nil {
-		log.Fatal(err)
+		logg.Fatal(err)
 	}
 
 	postgres := postgres.NewTaskRepository(db)

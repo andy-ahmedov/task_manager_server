@@ -14,9 +14,17 @@ type Postgres struct {
 	Port     int
 }
 
+type Broker struct {
+	Username string
+	Password string
+	Host     string
+	Port     int
+}
+
 type Config struct {
 	DB   Postgres
 	Srvr Server
+	Brkr Broker
 }
 
 func New() (*Config, error) {
@@ -27,6 +35,10 @@ func New() (*Config, error) {
 	}
 
 	if err := envconfig.Process("server", &cfg.Srvr); err != nil {
+		return nil, err
+	}
+
+	if err := envconfig.Process("broker", &cfg.Brkr); err != nil {
 		return nil, err
 	}
 

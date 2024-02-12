@@ -1,7 +1,10 @@
 all: run
 
+run:
+	sudo docker-compose up server
+#	sudo docker-compose run server
 
-sup:
+build_up:
 	sudo docker-compose up --build server
 
 server_run: 
