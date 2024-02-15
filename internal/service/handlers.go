@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/andy-ahmedov/task_manager_server/internal/domain"
 	"github.com/andy-ahmedov/task_manager_grpc_api/api"
+	"github.com/andy-ahmedov/task_manager_server/internal/domain"
 )
 
 func (t *TasksStorage) CreateTask(ctx context.Context, req *api.CreateRequest) error {
