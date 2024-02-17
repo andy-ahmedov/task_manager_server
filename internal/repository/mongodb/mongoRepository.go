@@ -16,3 +16,7 @@ func (m *MongoRepository) Insert(ctx context.Context, item domain.LogItem) error
 
 	return err
 }
+
+func (m *MongoRepository) Get(ctx context.Context, id int) (*domain.LogItem, error) {
+	panic("implement me")
+}
