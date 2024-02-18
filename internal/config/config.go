@@ -21,16 +21,30 @@ type Broker struct {
 	Port     int
 }
 
+type Mongo struct {
+	Username string
+	Password string
+	Host     string
+	Database string
+	AuthDB   string
+	Port     int
+}
+
 type Config struct {
-	DB   Postgres
-	Srvr Server
-	Brkr Broker
+	PostgresDB Postgres
+	MongoDB    Mongo
+	Srvr       Server
+	Brkr       Broker
 }
 
 func New() (*Config, error) {
 	cfg := new(Config)
 
-	if err := envconfig.Process("db", &cfg.DB); err != nil {
+	if err := envconfig.Process("postgres", &cfg.PostgresDB); err != nil {
+		return nil, err
+	}
+
+	if err := envconfig.Process("mongo", &cfg.MongoDB); err != nil {
 		return nil, err
 	}
 

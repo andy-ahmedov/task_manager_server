@@ -1,10 +1,10 @@
-package service
+package taskService
 
 import (
 	"context"
 
-	"github.com/andy-ahmedov/task_manager_server/internal/domain"
 	"github.com/andy-ahmedov/task_manager_grpc_api/api"
+	"github.com/andy-ahmedov/task_manager_server/internal/domain"
 )
 
 type TaskRepository interface {
