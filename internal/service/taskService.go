@@ -15,12 +15,12 @@ type TaskRepository interface {
 	Update(ctx context.Context, id int64, updTask domain.UpdateTaskInput) error
 }
 
-type TasksStorage struct {
+type TasksService struct {
 	repo TaskRepository
 }
 
-func NewTaskStorage(repo TaskRepository) *TasksStorage {
-	return &TasksStorage{
+func NewTaskService(repo TaskRepository) *TasksService {
+	return &TasksService{
 		repo: repo,
 	}
 }

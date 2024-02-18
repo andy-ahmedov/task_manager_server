@@ -8,7 +8,7 @@ import (
 	"github.com/andy-ahmedov/task_manager_server/internal/domain"
 )
 
-func (t *TasksStorage) CreateTask(ctx context.Context, req *api.CreateRequest) error {
+func (t *TasksService) CreateTask(ctx context.Context, req *api.CreateRequest) error {
 	task := domain.Task{
 		Name:        req.Name,
 		Description: req.Description,
@@ -20,19 +20,19 @@ func (t *TasksStorage) CreateTask(ctx context.Context, req *api.CreateRequest) e
 
 }
 
-func (t *TasksStorage) GetTask(ctx context.Context, id int64) (domain.Task, error) {
+func (t *TasksService) GetTask(ctx context.Context, id int64) (domain.Task, error) {
 	return t.repo.Get(ctx, id)
 }
 
-func (t *TasksStorage) GetAllTasks(ctx context.Context) ([]domain.Task, error) {
+func (t *TasksService) GetAllTasks(ctx context.Context) ([]domain.Task, error) {
 	return t.repo.GetAll(ctx)
 }
 
-func (t *TasksStorage) DeleteTask(ctx context.Context, id int64) error {
+func (t *TasksService) DeleteTask(ctx context.Context, id int64) error {
 	return t.repo.Delete(ctx, id)
 }
 
-func (t *TasksStorage) UpdateTask(ctx context.Context, req *api.UpdateRequest) error {
+func (t *TasksService) UpdateTask(ctx context.Context, req *api.UpdateRequest) error {
 	task := ConvertToDomainUpdateTask(req)
 
 	return t.repo.Update(ctx, req.ID, task)

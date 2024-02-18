@@ -26,7 +26,7 @@ func main() {
 	}
 
 	postgres := postgres.NewTaskRepository(db)
-	service := service.NewTaskStorage(postgres)
+	service := service.NewTaskService(postgres)
 	taskSrv := grpc_client.NewCreaterServer(service, logg)
 	srv := grpc_client.New(taskSrv)
 
