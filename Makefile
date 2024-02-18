@@ -11,7 +11,7 @@ server_run:
 	go run cmd/main.go
 
 up:
-	docker-compose up -d db
+	docker-compose up -d postgresdb
 
 stop_and_delete_container:
 	docker stop new_task_manager

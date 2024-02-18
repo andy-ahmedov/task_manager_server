@@ -1,31 +1,34 @@
-package broker
+package rabbitmq
 
 import (
 	"fmt"
 	"log"
 
 	"github.com/andy-ahmedov/task_manager_server/internal/config"
-	"github.com/streadway/amqp"
+	amqp "github.com/rabbitmq/amqp091-go"
+	// "github.com/streadway/amqp"
 )
 
-func InitRabbitMQ(cfg *config.Broker) error {
+func InitRabbitMQ(cfg *config.Broker) {
 	connStr := fmt.Sprintf("amqp://%s:%s@%s:%d/", cfg.Username, cfg.Password, cfg.Host, cfg.Port)
 	conn, err := amqp.Dial(connStr)
 	if err != nil {
 		fmt.Println("Failed to connect to RabbitMQ")
-		return err
+		// return err
+		log.Fatal(err)
 	}
 	defer conn.Close()
 
 	ch, err := conn.Channel()
 	if err != nil {
 		fmt.Println("Failed to open a channel")
-		return err
+		// return err
+		log.Fatal(err)
 	}
 	defer ch.Close()
 
 	q, err := ch.QueueDeclare(
-		"grpc",
+		"LogItemsQueue",
 		false,
 		false,
 		false,
@@ -34,7 +37,8 @@ func InitRabbitMQ(cfg *config.Broker) error {
 	)
 	if err != nil {
 		fmt.Println("Failed to declare a queue")
-		return err
+		// return err
+		log.Fatal(err)
 	}
 
 	msgs, err := ch.Consume(
@@ -48,19 +52,20 @@ func InitRabbitMQ(cfg *config.Broker) error {
 	)
 	if err != nil {
 		fmt.Println("Failed to declare a queue")
-		return err
+		// return err
+		log.Fatal(err)
 	}
 
-	var forever chan struct{}
-
-	go func() {
-		for d := range msgs {
-			log.Printf("Received a message: %s\n", d.Body)
-		}
-	}()
-
+	// var forever chan struct{}
 	log.Printf(" [*] Waiting for messages. To exit press CTRL+C")
-	<-forever
 
-	return err
+	// go func() {
+	for d := range msgs {
+		log.Printf("Received a message: %s\n", d.Body)
+	}
+	// }()
+
+	// <-forever
+
+	// return err
 }
