@@ -40,9 +40,12 @@ func main() {
 	taskSrv := grpc_client.NewCreaterServer(taskService, logg)
 	srv := grpc_client.New(taskSrv)
 
+	// if err = rabbitmq.InitRabbitMQ(&cfg.Brkr); err != nil {
+	// 	logg.Fatal(err)
+	// }
+	go rabbitmq.InitRabbitMQ(&cfg.Brkr, logg)
+
 	if err := srv.ListenAndServe(cfg.Srvr.Port); err != nil {
 		logg.Fatal(err)
 	}
-
-	rabbitmq.InitRabbitMQ(&cfg.Brkr)
 }
