@@ -1,9 +1,12 @@
 package rabbitmq
 
 import (
+	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/andy-ahmedov/task_manager_server/internal/config"
+	"github.com/andy-ahmedov/task_manager_server/internal/domain"
 	amqp "github.com/rabbitmq/amqp091-go"
 	"github.com/sirupsen/logrus"
 )
@@ -61,10 +64,17 @@ func ConsumeChannel(q amqp.Queue, ch *amqp.Channel, logg *logrus.Logger) (<-chan
 	return msgs, nil
 }
 
-func QueueProcessing(msgs <-chan amqp.Delivery, logg *logrus.Logger) {
+func (b *Broker) QueueProcessing(ctx context.Context, msgs <-chan amqp.Delivery, logg *logrus.Logger) {
 	logg.Info("RABBIT MQ IS UP")
 	logg.Info(" [*] Waiting for messages. To exit press CTRL+C")
 	for d := range msgs {
-		logg.Infof("Received a message: %s\n", d.Body)
+		item := domain.LogItem{}
+
+		err := json.Unmarshal(d.Body, &item)
+		if err != nil {
+			b.Log.Fatal(err)
+		}
+		// logg.Infof("Received a message: %s\n", d.Body)
+		b.Service.Create(ctx, item)
 	}
 }
