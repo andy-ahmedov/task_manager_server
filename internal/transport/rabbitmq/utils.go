@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/andy-ahmedov/task_manager_server/internal/config"
+	amqp "github.com/rabbitmq/amqp091-go"
 	"github.com/sirupsen/logrus"
-	"github.com/streadway/amqp"
 )
 
 func ConnectToTCP(cfg *config.Broker, logg *logrus.Logger) (*amqp.Connection, error) {
