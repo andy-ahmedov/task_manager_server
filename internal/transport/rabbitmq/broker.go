@@ -27,13 +27,11 @@ func NewBroker(cfg *config.Broker, logg *logrus.Logger, logItemService LogItemSe
 	if err != nil {
 		log.Fatal(err)
 	}
-	// defer conn.Close()
 
 	ch, err := CreateChannel(conn, logg)
 	if err != nil {
 		log.Fatal(err)
 	}
-	// defer ch.Close()
 
 	q, err := DeclareQueue(ch, "LogItemsQueue", logg)
 	if err != nil {

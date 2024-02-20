@@ -11,7 +11,6 @@ services:
       - rabbitmq
       - mongodb
     networks:
-      # - task_manager_client_default
       - task_manager_server_default
     env_file:
       - .env
@@ -43,19 +42,20 @@ services:
     networks:
       - task_manager_server_default
 
-    mongodb:
-      image: mongo:latest
-      container_name: task_manager_mongo
-      ports:
-        - "27017:27017"
-      environment:
-        - MONGO_INITDB_ROOT_USERNAME=admin
-        - MONGO_INITDB_ROOT_PASSWORD=admin
-        - MONGO_INITDB_DATABASE=log_item_data
+  mongodb:
+    image: mongo:latest
+    container_name: task_manager_mongo
+    ports:
+      - "27017:27017"
+    # logging:
+    #   driver: "none"
+    command: --authx
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGO_INITDB_DATABASE=log_item_data
   
 
 networks:
-  # task_manager_client_default:
-  #   external: true
   task_manager_server_default:
     external: true
