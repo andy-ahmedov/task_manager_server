@@ -51,6 +51,7 @@ services:
       environment:
         - MONGO_INITDB_ROOT_USERNAME=admin
         - MONGO_INITDB_ROOT_PASSWORD=admin
+        - MONGO_INITDB_DATABASE=log_item_data
   
 
 networks:

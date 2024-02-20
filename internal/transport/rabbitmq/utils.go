@@ -74,7 +74,10 @@ func (b *Broker) QueueProcessing(ctx context.Context, msgs <-chan amqp.Delivery,
 		if err != nil {
 			b.Log.Fatal(err)
 		}
-		// logg.Infof("Received a message: %s\n", d.Body)
-		b.Service.Create(ctx, item)
+		logg.Infof("Received a message: %s\n", item)
+		err = b.Service.Create(ctx, item)
+		if err != nil {
+			b.Log.Error(err)
+		}
 	}
 }

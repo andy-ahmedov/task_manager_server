@@ -22,22 +22,18 @@ type Broker struct {
 	Service LogItemService
 }
 
-func NewBroker() {
-
-}
-
-func InitRabbitMQ(cfg *config.Broker, logg *logrus.Logger, logItemService LogItemService) *Broker {
+func NewBroker(cfg *config.Broker, logg *logrus.Logger, logItemService LogItemService) *Broker {
 	conn, err := ConnectToTCP(cfg, logg)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer conn.Close()
+	// defer conn.Close()
 
 	ch, err := CreateChannel(conn, logg)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer ch.Close()
+	// defer ch.Close()
 
 	q, err := DeclareQueue(ch, "LogItemsQueue", logg)
 	if err != nil {
@@ -60,6 +56,8 @@ func (b *Broker) RunBrokerServer(ctx context.Context) {
 	}
 
 	go b.QueueProcessing(ctx, msgs, b.Log)
+	defer b.Conn.Close()
+	defer b.Ch.Close()
 
 	select {}
 }

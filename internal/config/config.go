@@ -27,7 +27,7 @@ type Mongo struct {
 	Host     string
 	Database string
 	AuthDB   string
-	Port     int
+	Port     string
 }
 
 type Config struct {
