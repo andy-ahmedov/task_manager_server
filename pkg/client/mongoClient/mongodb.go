@@ -56,17 +56,9 @@ func NewClientOptions(cfg config.Mongo, mongoDBurl string, isAuth bool) *options
 }
 
 func ConnectAndPing(ctx context.Context, clientOptions *options.ClientOptions) (*mongo.Client, error) {
-	// client, err := mongo.Connect(ctx, clientOptions)
-	client, err := mongo.NewClient(clientOptions)
+	client, err := mongo.Connect(ctx, clientOptions)
 	if err != nil {
-		// return nil, fmt.Errorf("failed to connect to mongoDB due to error: %v", err)
-		return nil, fmt.Errorf("Error while try to initialize mongo db %v", err)
-	}
-
-	// Create connect
-	err = client.Connect(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("Error while connect to mongodb %v", err)
+		return nil, fmt.Errorf("failed to connect to mongoDB due to error: %v", err)
 	}
 
 	if err = client.Ping(ctx, nil); err != nil {
