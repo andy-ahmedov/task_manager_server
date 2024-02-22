@@ -21,5 +21,8 @@ stop_and_delete_container:
 mongodb:
 	docker run --rm -d --name mongodb -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin -e MONGO_INITDB_DATABASE=log_item_data -p 27017:27017 mongo:latest --auth
 
+container_rune:
+	docker run -it task_manager_debug:latest sh
+
 create_table:
 	docker exec -it new_task_manager psql -U postgres -d task_service -c "\i script.sql"

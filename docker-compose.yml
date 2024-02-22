@@ -15,6 +15,24 @@ services:
     env_file:
       - .env
 
+  debug:
+    image: task_manager_debug
+    container_name: task_manager_debug
+    build:
+      context: .
+      dockerfile: Dockerfile.debug
+    ports:
+      - "9000:9000"
+      - "2345:2345"
+    depends_on:
+      - postgresdb
+      - rabbitmq
+      - mongodb
+    networks:
+      - task_manager_server_default
+    env_file:
+      - .env
+
   postgresdb:
     build: ./database/
     container_name: task_manager_postgres

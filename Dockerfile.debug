@@ -1,0 +1,24 @@
+# Compile stage
+FROM golang:1.22-alpine3.19 AS build-env
+
+ENV CGO_ENABLED 0
+
+# Build Delve
+RUN apk add --no-cache git
+RUN go install github.com/go-delve/delve/cmd/dlv@latest
+RUN apk add libc6-compat
+
+ADD . /dockerdev
+WORKDIR /dockerdev
+
+RUN go build -gcflags="all=-N -l" -o /server cmd/main.go
+
+# Final stage
+FROM alpine:3.11
+
+WORKDIR /
+COPY --from=build-env /go/bin/dlv /
+COPY --from=build-env /server /
+RUN apk add libc6-compat
+
+CMD ["/dlv", "--listen=:2345", "--headless=true", "--api-version=2", "--accept-multiclient", "exec", "/server"]
