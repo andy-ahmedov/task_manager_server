@@ -13,6 +13,9 @@ server_run:
 up:
 	docker-compose up -d postgresdb
 
+lint:
+	golangci-lint run
+
 stop_and_delete_container:
 	docker stop new_task_manager
 	docker rm new_task_manager
